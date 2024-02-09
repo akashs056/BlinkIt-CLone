@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.userblinkitclone.SplashFragment"
+        android:name="com.example.userblinkitclone.Fragments.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.userblinkitclone.SignInFragment"
+        android:name="com.example.userblinkitclone.Fragments.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/OTPFragment"
-        android:name="com.example.userblinkitclone.OTPFragment"
+        android:name="com.example.userblinkitclone.Fragments.OTPFragment"
         android:label="fragment_o_t_p"
         tools:layout="@layout/fragment_o_t_p" >
         <action
