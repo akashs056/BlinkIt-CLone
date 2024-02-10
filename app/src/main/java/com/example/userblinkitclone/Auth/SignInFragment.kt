@@ -1,4 +1,4 @@
-package com.example.userblinkitclone.Fragments
+package com.example.userblinkitclone.Auth
 
 import android.os.Bundle
 import android.text.Editable
@@ -34,7 +34,7 @@ class SignInFragment : Fragment() {
             }
             val bundle= Bundle()
             bundle.putString("number", number.toString())
-            findNavController().navigate(R.id.action_signInFragment_to_OTPFragment)
+            findNavController().navigate(R.id.action_signInFragment_to_OTPFragment,bundle)
         }
     }
 

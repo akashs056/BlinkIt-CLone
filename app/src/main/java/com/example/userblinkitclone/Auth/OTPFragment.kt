@@ -1,4 +1,4 @@
-package com.example.userblinkitclone.Fragments
+package com.example.userblinkitclone.Auth
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,23 +7,81 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.userblinkitclone.R
+import com.example.userblinkitclone.Utils.Utils
 import com.example.userblinkitclone.databinding.FragmentOTPBinding
+import com.example.userblinkitclone.viewModels.AuthVIewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class OTPFragment : Fragment() {
+    private val viewModel =AuthVIewModel()
     private lateinit var binding: FragmentOTPBinding
     private lateinit var number:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding= FragmentOTPBinding.inflate(layoutInflater)
         getUserNumber()
+        sendOtp(number)
         customizeEnteringOTP()
         onBackButtonClicked()
+        onLoginButtonClicked()
         return binding.root
     }
+
+    private fun onLoginButtonClicked() {
+        binding.login.setOnClickListener {
+            Utils.showDialog(requireContext(),"Verifying the OTP")
+            val editTexts = arrayOf(binding.otp1,binding.otp2,binding.otp3,binding.otp4,binding.otp5,binding.otp6)
+            val otp=editTexts.joinToString(""){
+                it.text.toString()
+            }
+            if (otp.length<editTexts.size){
+                Utils.Toast(requireContext(),"Incorrect Otp")
+                Utils.hideDialog()
+            }else{
+                editTexts.forEach { it.text?.clear()
+                it.clearFocus()
+                }
+                verifyOTP(otp)
+            }
+        }
+    }
+
+    private fun verifyOTP(otp: String) {
+        viewModel.apply {
+            signInWithPhoneAuthCredential(otp,number)
+            lifecycleScope.launch{
+                success.collect{
+                    if (it){
+                        Utils.hideDialog()
+                        Utils.Toast(requireContext(),"Signed In Successfully")
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun sendOtp(number: String) {
+        Utils.showDialog(requireContext(),"Sending OTP")
+        viewModel.apply {
+            sendOtp(number,requireActivity())
+            lifecycleScope.launch {
+                otpSent.collect{
+                    if (it){
+                        Utils.hideDialog()
+                        Utils.Toast(requireContext(),"OTP sent Successfully")
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun onBackButtonClicked() {
       binding.toolbar.setNavigationOnClickListener {

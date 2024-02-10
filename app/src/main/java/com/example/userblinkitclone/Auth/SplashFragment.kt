@@ -1,4 +1,4 @@
-package com.example.userblinkitclone.Fragments
+package com.example.userblinkitclone.Auth
 
 import android.os.Bundle
 import android.os.Handler
