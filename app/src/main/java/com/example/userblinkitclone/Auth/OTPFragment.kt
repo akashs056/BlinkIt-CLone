@@ -1,5 +1,6 @@
 package com.example.userblinkitclone.Auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,11 +10,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.userblinkitclone.Activities.UsersMainActivity
+import com.example.userblinkitclone.Models.Users
 import com.example.userblinkitclone.R
 import com.example.userblinkitclone.Utils.Utils
 import com.example.userblinkitclone.databinding.FragmentOTPBinding
 import com.example.userblinkitclone.viewModels.AuthVIewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class OTPFragment : Fragment() {
@@ -53,13 +55,16 @@ class OTPFragment : Fragment() {
     }
 
     private fun verifyOTP(otp: String) {
+        val users = Users(Utils.getCurrentUid(),number,null)
         viewModel.apply {
-            signInWithPhoneAuthCredential(otp,number)
+            signInWithPhoneAuthCredential(otp,number,users)
             lifecycleScope.launch{
                 success.collect{
                     if (it){
                         Utils.hideDialog()
                         Utils.Toast(requireContext(),"Signed In Successfully")
+                        startActivity(Intent(requireActivity(),UsersMainActivity::class.java))
+                        requireActivity().finish()
                     }
                 }
             }

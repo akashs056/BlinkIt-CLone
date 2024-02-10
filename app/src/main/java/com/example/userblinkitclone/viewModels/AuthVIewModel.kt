@@ -2,12 +2,13 @@ package com.example.userblinkitclone.viewModels
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
+import com.example.userblinkitclone.Models.Users
 import com.example.userblinkitclone.Utils.Utils
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.concurrent.TimeUnit
 
@@ -17,6 +18,14 @@ class AuthVIewModel : ViewModel() {
     val otpSent =_otpSent
     private  val _success=MutableStateFlow(false)
     val  success=_success
+    private val _isCurrentUser=MutableStateFlow(false)
+    val isCurrentUser=_isCurrentUser
+
+    init {
+        Utils.getAuthInstance().currentUser?.let {
+            _isCurrentUser.value=true
+        }
+    }
     fun sendOtp(number : String, activity: Activity){
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -44,12 +53,16 @@ class AuthVIewModel : ViewModel() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun signInWithPhoneAuthCredential(otp : String, number: String) {
+    fun signInWithPhoneAuthCredential(otp: String, number: String, users: Users) {
         val credential = PhoneAuthProvider.getCredential(_verificationId.value.toString(), otp)
         Utils.getAuthInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _success.value=true
+                    FirebaseDatabase.getInstance().getReference("ALl Users")
+                        .child("Users")
+                        .child(users.uid!!)
+                        .setValue(users)
                 } else {
 
                 }
