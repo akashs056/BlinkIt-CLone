@@ -39,6 +39,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="@dimen/_8sdp"
                     android:clickable="true"
+                    app:tint="@color/black"
                     android:src="@drawable/profile"
                     app:layout_collapseMode="parallax" />
 
@@ -58,6 +59,7 @@
                         android:drawablePadding="10dp"
                         android:hint="Search"
                         android:padding="10dp"
+                        android:drawableTint="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:drawableStartCompat="@drawable/search" />
                 </androidx.cardview.widget.CardView>

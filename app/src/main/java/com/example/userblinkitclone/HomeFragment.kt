@@ -1,18 +1,16 @@
 package com.example.userblinkitclone
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.example.userblinkitclone.Adapters.CategoryAdapter
 import com.example.userblinkitclone.Models.Category
 import com.example.userblinkitclone.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
@@ -21,6 +19,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=FragmentHomeBinding.inflate(layoutInflater)
         setAllCategories()
+        setStatusBarColor()
         return binding.root
     }
 
@@ -30,6 +29,15 @@ class HomeFragment : Fragment() {
             categoryList.add(Category(Constants.allProductsCategory[i],Constants.allProductsCategoryIcon[i]))
         }
         binding.rvCategories.adapter=CategoryAdapter(categoryList)
+    }
+    private fun setStatusBarColor() {
+        activity?.window?.apply {
+            val statusBarColors= ContextCompat.getColor(requireContext(),R.color.orange)
+            statusBarColor=statusBarColors
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
     }
 
 }

@@ -12,7 +12,7 @@ object Utils {
 
     private var dialog:AlertDialog?=null
     fun showDialog(context: Context,message: String){
-        val progress=ProgressDialogBinding.inflate(LayoutInflater.from(context))
+        val progress= ProgressDialogBinding.inflate(LayoutInflater.from(context))
         progress.text.text=message
         dialog=AlertDialog.Builder(context).setView(progress.root).setCancelable(false).create()
         dialog!!.show()
@@ -32,6 +32,6 @@ object Utils {
     }
 
     fun getCurrentUid() : String{
-        return FirebaseAuth.getInstance().currentUser!!.uid
+        return firebaseAuthInstance!!.currentUser!!.uid
     }
 }

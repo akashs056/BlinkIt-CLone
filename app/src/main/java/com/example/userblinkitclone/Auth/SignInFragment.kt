@@ -1,5 +1,6 @@
 package com.example.userblinkitclone.Auth
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,7 +20,7 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding= FragmentSignInBinding.inflate(layoutInflater)
-
+        setStatusBarColor()
         onContinueClick()
         getNumber()
         return binding.root
@@ -61,5 +62,14 @@ class SignInFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+    private fun setStatusBarColor() {
+        activity?.window?.apply {
+            val statusBarColors=ContextCompat.getColor(requireContext(),R.color.yellow)
+            statusBarColor=statusBarColors
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/backarrow"
         app:title="OTP Verification"
+        android:foregroundTint="@color/black"
         app:titleMarginStart="@dimen/_8sdp"
         app:titleTextColor="@color/black" />
 

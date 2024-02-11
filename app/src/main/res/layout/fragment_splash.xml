@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_80sdp"
-                android:text="blinkit"
+                android:text="blink"
                 android:textColor="#000000"
                 android:textSize="@dimen/_68ssp"
                 android:textStyle="bold"/>
@@ -48,7 +48,7 @@
             />
         <View
             android:layout_width="@dimen/_220sdp"
-            android:layout_height="@dimen/_2sdp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="#7B7777"/>
         <TextView

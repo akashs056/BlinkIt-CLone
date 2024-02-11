@@ -53,11 +53,12 @@ class AuthVIewModel : ViewModel() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun signInWithPhoneAuthCredential(otp: String, number: String, users: Users) {
+    fun signInWithPhoneAuthCredential(otp: String, number: String) {
         val credential = PhoneAuthProvider.getCredential(_verificationId.value.toString(), otp)
         Utils.getAuthInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val users = Users(uid = task.result.user!!.uid,number=number,address =null)
                     _success.value=true
                     FirebaseDatabase.getInstance().getReference("ALl Users")
                         .child("Users")
