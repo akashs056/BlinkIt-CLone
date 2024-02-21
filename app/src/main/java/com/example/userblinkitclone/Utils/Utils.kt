@@ -34,4 +34,7 @@ object Utils {
     fun getCurrentUid() : String{
         return firebaseAuthInstance!!.currentUser!!.uid
     }
+    fun getRandomUid():String{
+        return (1..28).map { (('a'..'z') + ('0'..'9')).random() }.joinToString("")
+    }
 }

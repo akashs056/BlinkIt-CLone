@@ -16,6 +16,7 @@
             android:name=".Activities.UsersMainActivity"
             android:exported="false"
             android:label="@string/title_activity_users_main"
+            android:windowSoftInputMode="stateVisible"
             android:theme="@style/Theme.UserBlinkItClone" />
         <activity
             android:name=".Activities.MainActivity"

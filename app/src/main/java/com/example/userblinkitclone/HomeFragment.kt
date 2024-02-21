@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.userblinkitclone.Adapters.CategoryAdapter
 import com.example.userblinkitclone.Models.Category
 import com.example.userblinkitclone.databinding.FragmentHomeBinding
@@ -16,11 +17,17 @@ class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding=FragmentHomeBinding.inflate(layoutInflater)
         setAllCategories()
         setStatusBarColor()
+        onSearchClicked()
         return binding.root
+    }
+
+    private fun onSearchClicked() {
+        binding.searchEt.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
     }
 
     private fun setAllCategories() {
@@ -28,7 +35,12 @@ class HomeFragment : Fragment() {
         for (i in 0 until Constants.allProductsCategory.size){
             categoryList.add(Category(Constants.allProductsCategory[i],Constants.allProductsCategoryIcon[i]))
         }
-        binding.rvCategories.adapter=CategoryAdapter(categoryList)
+        binding.rvCategories.adapter=CategoryAdapter(categoryList,::onCategoryClicked)
+    }
+    private fun onCategoryClicked(category: Category){
+        val bundle =Bundle()
+        bundle.putString("categoryName",category.title)
+        findNavController().navigate(R.id.action_homeFragment_to_categroyFragment,bundle)
     }
     private fun setStatusBarColor() {
         activity?.window?.apply {
