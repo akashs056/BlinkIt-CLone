@@ -65,13 +65,61 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/add_btn_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/decrement"
+                        android:layout_width="0.5dp"
+                        android:layout_height="3dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/minus"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/add_btn_bg"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textSize="@dimen/_15sdp"
+                        android:textColor="#FFFFFF" />
+
+                    <ImageButton
+                        android:id="@+id/increment"
+                        android:layout_width="0.5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/add"
+                        app:tint="#FFFFFF" />
+
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/buy"
+                    android:visibility="visible"
+                    android:id="@+id/add"
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/_3sdp"
-                    android:text="Buy"
+                    android:text="Add"
                     android:textColor="@color/green"
                     android:textStyle="bold"
                     android:background="@drawable/bg_edit"
