@@ -1,8 +1,12 @@
 package com.example.userblinkitclone
 
-import com.example.userblinkitclone.Models.Category
-
 object Constants {
+
+    val MERCHAT_ID="PGTESTPAYUAT"
+    val SALT_KEY="099eb0cd-02cf-4e2a-8aca-3e6c6aff0399"
+    var apiEndPoint = "/pg/v1/pay"
+    var merchantTransactionId = "txtIdd"
+
 
     val allProductsCategory = arrayOf(
         "Vegetables and Fruit",

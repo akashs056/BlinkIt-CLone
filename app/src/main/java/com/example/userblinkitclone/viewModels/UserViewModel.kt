@@ -7,7 +7,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.userblinkitclone.Constants
 import com.example.userblinkitclone.Models.Product
+import com.example.userblinkitclone.Models.Users
+import com.example.userblinkitclone.Utils.Utils
+import com.example.userblinkitclone.api.ApiUtilities
 import com.example.userblinkitclone.roomdb.CartProductDatabase
 import com.example.userblinkitclone.roomdb.cartProducts
 import com.example.userblinkitclone.roomdb.cartProductsDao
@@ -17,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,6 +30,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     //initialization
     val sharedPreferences:SharedPreferences=application.getSharedPreferences("My_Pref",MODE_PRIVATE)
     val cartProductsDao:cartProductsDao=CartProductDatabase.getDatabaseInstance(application).cartProductDao()
+
+    val _paymentStatus= MutableStateFlow<Boolean>(false)
+    val paymentStatus=_paymentStatus
 
     //Room DB
     suspend fun insertCartProduct(cartProducts: cartProducts){
@@ -97,5 +105,32 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         val totalItemCount=MutableLiveData<Int>()
         totalItemCount.value=sharedPreferences.getInt("itemCount",0)
         return totalItemCount
+    }
+    fun saveAddress(address : String){
+        FirebaseDatabase.getInstance().getReference("ALl Users")
+            .child("Users")
+            .child(Utils.getCurrentUid())
+            .child("address")
+            .setValue(address)
+    }
+
+    fun saveAddressStatus(){
+        sharedPreferences.edit().putBoolean("address",true).apply()
+    }
+
+    fun fetchAddress():MutableLiveData<Boolean>{
+        val status=MutableLiveData<Boolean>()
+        status.value=sharedPreferences.getBoolean("address",false)
+        return status
+    }
+    //Retrofit
+    suspend fun checkPaymentStatus(header:Map<String,String>){
+        val res= ApiUtilities.statusApi.checkStatus(header,Constants.MERCHAT_ID,Constants.merchantTransactionId)
+        if (res.body()!=null&& res.body()!!.success){
+            _paymentStatus.value=true
+        }else{
+            _paymentStatus.value=false
+        }
+
     }
 }

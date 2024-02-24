@@ -58,7 +58,7 @@ class AuthVIewModel : ViewModel() {
         Utils.getAuthInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val users = Users(uid = task.result.user!!.uid,number=number,address =null)
+                    val users = Users(uid = task.result.user!!.uid,number=number,address ="null")
                     _success.value=true
                     FirebaseDatabase.getInstance().getReference("ALl Users")
                         .child("Users")
