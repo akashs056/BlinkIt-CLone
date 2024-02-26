@@ -9,7 +9,6 @@ import com.example.userblinkitclone.Utils.Utils
 data class cartProducts(
     @PrimaryKey
     val productRandomId:String= "random",
-
     var productTitle:String?=null,
     var productQuantity:String?=null,
     var productPrice:String?=null,
@@ -18,4 +17,5 @@ data class cartProducts(
     var image:String?=null,
     var productCategory:String?=null,
     val adminUid:String?=null,
-)
+    var productType:String?=null,
+    )

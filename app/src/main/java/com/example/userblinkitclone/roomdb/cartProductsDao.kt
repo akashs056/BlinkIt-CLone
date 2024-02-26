@@ -22,4 +22,7 @@ interface cartProductsDao {
 
     @Query("DELETE FROM CartProducts WHERE productRandomId=:productId")
     fun deleteCartProduct(productId:String)
+
+    @Query("DELETE FROM cartproducts")
+    fun deleteAllCartProducts()
 }

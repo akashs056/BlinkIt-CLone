@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.userblinkitclone.Constants
+import com.example.userblinkitclone.Models.Orders
 import com.example.userblinkitclone.Models.Product
 import com.example.userblinkitclone.Models.Users
 import com.example.userblinkitclone.Utils.Utils
@@ -47,6 +48,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
     suspend fun deleteCartProduct(productId:String){
         cartProductsDao.deleteCartProduct(productId)
+    }
+
+    suspend fun deleteAllCartProducts(){
+        cartProductsDao.deleteAllCartProducts()
     }
     //Firebase Call
     fun getCategoryProducts(title: String?): Flow<List<Product>> = callbackFlow{
@@ -91,12 +96,26 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         db.addValueEventListener(eventListener)
         awaitClose{db.removeEventListener(eventListener)}
     }
+
     fun addProductToFirebase(product: Product,itemCount:Int){
         FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts").child(product.productRandomId).child("itemCount").setValue(itemCount)
         FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory").child(product.productCategory!!).child(product.productRandomId).child("itemCount").setValue(itemCount)
         FirebaseDatabase.getInstance().getReference("Admins").child("ProductType").child(product.productType!!).child(product.productRandomId).child("itemCount").setValue(itemCount)
 
     }
+
+    fun saveStockAfterOrdering(stock:Int,product: cartProducts){
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts").child(product.productRandomId).child("itemCount").setValue(0)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory").child(product.productCategory!!).child(product.productRandomId).child("itemCount").setValue(0)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductType").child(product.productType!!).child(product.productRandomId).child("itemCount").setValue(0)
+
+
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts").child(product.productRandomId).child("productStock").setValue(stock)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory").child(product.productCategory!!).child(product.productRandomId).child("productStock").setValue(stock)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductType").child(product.productType!!).child(product.productRandomId).child("productStock").setValue(stock)
+    }
+
+
     //shared Preference
     fun savingCartItemCount(itemCount :Int){
         sharedPreferences.edit().putInt("itemCount",itemCount).apply()
@@ -112,6 +131,27 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             .child(Utils.getCurrentUid())
             .child("address")
             .setValue(address)
+    }
+
+    fun getUserAddress(callback:(String?)->Unit){
+        val db=FirebaseDatabase.getInstance().getReference("ALl Users")
+            .child("Users")
+            .child(Utils.getCurrentUid())
+            .child("address")
+        db.addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    val address=snapshot.getValue(String::class.java)
+                    callback(address)
+                }else{
+                    callback(null)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(null)
+            }
+        })
     }
 
     fun saveAddressStatus(){
@@ -133,4 +173,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     }
+
+    fun saveOrderedProducts(orders: Orders){
+        FirebaseDatabase.getInstance().getReference("Admins").child("Orders")
+            .child(orders.orderId!!).setValue(orders)
+    }
+
 }

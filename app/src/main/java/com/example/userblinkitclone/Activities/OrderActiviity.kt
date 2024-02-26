@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.userblinkitclone.Adapters.CartProductsAdapter
+import com.example.userblinkitclone.CartListener
 import com.example.userblinkitclone.Constants
+import com.example.userblinkitclone.Models.Orders
 import com.example.userblinkitclone.R
 import com.example.userblinkitclone.Utils.Utils
 import com.example.userblinkitclone.databinding.ActivityOrderActiviityBinding
@@ -35,6 +37,7 @@ class OrderActiviity : AppCompatActivity() {
     val  viewModel: UserViewModel by viewModels()
     private lateinit var adapterCartProducts: CartProductsAdapter
     private lateinit var b2BPGRequest : B2BPGRequest
+    private var cartListener: CartListener?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityOrderActiviityBinding.inflate(layoutInflater)
@@ -98,7 +101,6 @@ class OrderActiviity : AppCompatActivity() {
                         .setView(addressLayoutBinding.root)
                         .create()
                     alterDialog.show()
-
                     addressLayoutBinding.Add.setOnClickListener { saveAddress(alterDialog,addressLayoutBinding) }
                 }
             }
@@ -123,10 +125,41 @@ class OrderActiviity : AppCompatActivity() {
             viewModel.paymentStatus.collect{
                 if (it){
                     Utils.Toast(this@OrderActiviity,"Payment Done Successfully")
+                    //save order
+                    saveProduct()
+                    //delete product
+                    lifecycleScope.launch { viewModel.deleteAllCartProducts() }
+                    viewModel.savingCartItemCount(0)
+                    //hide cart layout
+                    cartListener?.hideCartLayout()
                     startActivity(Intent(this@OrderActiviity,UsersMainActivity::class.java))
                     finish()
                 }else{
                     Utils.Toast(this@OrderActiviity,"Payment Failed")
+                }
+            }
+        }
+    }
+
+
+    private fun saveProduct() {
+        viewModel.getAll().observe(this){cartProductList->
+            if (cartProductList.isNotEmpty()) {
+                viewModel.getUserAddress { address ->
+                    val orders = Orders(
+                        orderId = Utils.getRandomUid(),
+                        orderList = cartProductList,
+                        userAddress = address,
+                        orderStatus = 0,
+                        orderDate = Utils.getCurrentDate(),
+                        orderingUserId = Utils.getCurrentUid()
+                    )
+                    viewModel.saveOrderedProducts(orders)
+                    for (products in cartProductList) {
+                        val count = products.productCount
+                        val stock = products.productStock?.minus(count!!)
+                        viewModel.saveStockAfterOrdering(stock!!, products)
+                    }
                 }
             }
         }
@@ -160,8 +193,8 @@ class OrderActiviity : AppCompatActivity() {
             viewModel.saveAddressStatus()
         }
         com.example.userblinkitclone.Utils.Utils.Toast(this,"Address Saved")
+        Utils.hideDialog()
         alterDialog.dismiss()
-        com.example.userblinkitclone.Utils.Utils.hideDialog()
 
     }
 

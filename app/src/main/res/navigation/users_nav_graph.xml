@@ -18,6 +18,10 @@
             android:id="@+id/action_homeFragment_to_categroyFragment"
             app:enterAnim="@anim/from_right"
             app:destination="@id/categroyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profuileFragment"
+            app:destination="@id/profuileFragment"
+            app:enterAnim="@anim/from_right"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -43,4 +47,25 @@
             app:enterAnim="@anim/from_right"
             app:destination="@id/searchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profuileFragment"
+        android:name="com.example.userblinkitclone.ProfuileFragment"
+        android:label="fragment_profuile"
+        tools:layout="@layout/fragment_profuile" >
+        <action
+            android:id="@+id/action_profuileFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profuileFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment"
+            app:popUpTo="@id/profuileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.userblinkitclone.OrdersFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders" />
 </navigation>
