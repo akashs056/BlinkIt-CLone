@@ -1,5 +1,6 @@
 package com.example.userblinkitclone.Adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,11 +34,12 @@ class OrdersAdapter(val context: Context):RecyclerView.Adapter<OrdersAdapter.vie
         return differ.currentList.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         val currentOrder=differ.currentList[position]
         holder.binding.apply {
             title.text=currentOrder.itemTitle
-            price.text=currentOrder.itemPrice.toString()
+            price.text="₹${currentOrder.itemPrice.toString()}"
             date.text=currentOrder.itemDate
             when(currentOrder.itemStatus){
             0->{

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.userblinkitclone.Constants
+import com.example.userblinkitclone.Models.OrderedItems
 import com.example.userblinkitclone.Models.Orders
 import com.example.userblinkitclone.Models.Product
 import com.example.userblinkitclone.Models.Users
@@ -113,6 +114,28 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts").child(product.productRandomId).child("productStock").setValue(stock)
         FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory").child(product.productCategory!!).child(product.productRandomId).child("productStock").setValue(stock)
         FirebaseDatabase.getInstance().getReference("Admins").child("ProductType").child(product.productType!!).child(product.productRandomId).child("productStock").setValue(stock)
+    }
+
+    fun getAllOrders():Flow<List<Orders>> = callbackFlow{
+        val db= FirebaseDatabase.getInstance().getReference("Admins").child("Orders").orderByChild("orderStatus")
+        val eventListener=object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val orderList=ArrayList<Orders>()
+                for (orders in snapshot.children){
+                    val order=orders.getValue(Orders::class.java)
+                    if (order?.orderingUserId==Utils.getCurrentUid()){
+                        orderList.add(order)
+                    }
+                }
+                trySend(orderList)
+
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        }
+        db.addValueEventListener(eventListener)
+        awaitClose{db.removeEventListener(eventListener)}
     }
 
 

@@ -21,7 +21,7 @@
         <action
             android:id="@+id/action_homeFragment_to_profuileFragment"
             app:destination="@id/profuileFragment"
-            app:enterAnim="@anim/from_right"/>
+            app:enterAnim="@anim/from_right" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -56,16 +56,23 @@
             android:id="@+id/action_profuileFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
+            app:enterAnim="@anim/from_left"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_profuileFragment_to_ordersFragment"
             app:destination="@id/ordersFragment"
-            app:popUpTo="@id/profuileFragment"
-            app:popUpToInclusive="true" />
+            app:enterAnim="@anim/from_right" />
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.example.userblinkitclone.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_profuileFragment"
+            app:destination="@id/profuileFragment"
+            app:popUpTo="@id/profuileFragment"
+            app:enterAnim="@anim/from_left"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
