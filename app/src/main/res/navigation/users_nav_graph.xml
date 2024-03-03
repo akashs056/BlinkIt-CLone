@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.userblinkitclone.HomeFragment"
+        android:name="com.example.userblinkitclone.Fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.userblinkitclone.SearchFragment"
+        android:name="com.example.userblinkitclone.Fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/categroyFragment"
-        android:name="com.example.userblinkitclone.CategroyFragment"
+        android:name="com.example.userblinkitclone.Fragments.CategroyFragment"
         android:label="fragment_categroy"
         tools:layout="@layout/fragment_categroy" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/profuileFragment"
-        android:name="com.example.userblinkitclone.ProfuileFragment"
+        android:name="com.example.userblinkitclone.Fragments.ProfuileFragment"
         android:label="fragment_profuile"
         tools:layout="@layout/fragment_profuile" >
         <action
@@ -65,13 +65,29 @@
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.example.userblinkitclone.OrdersFragment"
+        android:name="com.example.userblinkitclone.Fragments.OrdersFragment"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders" >
         <action
             android:id="@+id/action_ordersFragment_to_profuileFragment"
             app:destination="@id/profuileFragment"
             app:popUpTo="@id/profuileFragment"
+            app:enterAnim="@anim/from_left"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ordersFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/from_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.userblinkitclone.OrderDetailFragment"
+        android:label="fragment_order_detail"
+        tools:layout="@layout/fragment_order_detail" >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment"
+            app:popUpTo="@id/ordersFragment"
             app:enterAnim="@anim/from_left"
             app:popUpToInclusive="true" />
     </fragment>

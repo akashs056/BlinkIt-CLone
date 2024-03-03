@@ -21,10 +21,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import java.util.EventListener
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -133,6 +135,19 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             override fun onCancelled(error: DatabaseError) {
 
             }
+        }
+        db.addValueEventListener(eventListener)
+        awaitClose{db.removeEventListener(eventListener)}
+    }
+
+    fun getOrderedProducts(orderId :String):Flow<List<cartProducts>> = callbackFlow {
+        val db=FirebaseDatabase.getInstance().getReference("Admins").child("Orders").child(orderId)
+        val eventListener =object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val order=snapshot.getValue(Orders::class.java)
+                trySend(order?.orderList!!)
+            }
+            override fun onCancelled(error: DatabaseError) {}
         }
         db.addValueEventListener(eventListener)
         awaitClose{db.removeEventListener(eventListener)}

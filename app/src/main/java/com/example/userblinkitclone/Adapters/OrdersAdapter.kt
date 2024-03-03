@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.userblinkitclone.Models.OrderedItems
+import com.example.userblinkitclone.Models.Orders
 import com.example.userblinkitclone.R
 import com.example.userblinkitclone.databinding.SampleYourOrdersBinding
 
-class OrdersAdapter(val context: Context):RecyclerView.Adapter<OrdersAdapter.viewHolder>() {
+class OrdersAdapter(val context: Context, val showOrderDetail: (OrderedItems) -> Unit):RecyclerView.Adapter<OrdersAdapter.viewHolder>() {
     class viewHolder(val binding:SampleYourOrdersBinding):RecyclerView.ViewHolder(binding.root){}
 
 
@@ -36,7 +37,7 @@ class OrdersAdapter(val context: Context):RecyclerView.Adapter<OrdersAdapter.vie
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        val currentOrder=differ.currentList[position]
+        val currentOrder: OrderedItems =differ.currentList[position]
         holder.binding.apply {
             title.text=currentOrder.itemTitle
             price.text="₹${currentOrder.itemPrice.toString()}"
@@ -46,7 +47,7 @@ class OrdersAdapter(val context: Context):RecyclerView.Adapter<OrdersAdapter.vie
                 status.text="Ordered"
                 status.backgroundTintList=ContextCompat.getColorStateList(context, R.color.yellow)
             }1->{
-                status.text="Redceived"
+                status.text="Received"
                 status.backgroundTintList=ContextCompat.getColorStateList(context, R.color.blue)
             }2->{
                 status.text="Dispatched"
@@ -56,6 +57,9 @@ class OrdersAdapter(val context: Context):RecyclerView.Adapter<OrdersAdapter.vie
                 status.backgroundTintList=ContextCompat.getColorStateList(context, R.color.orange)
             }
             }
+        }
+        holder.itemView.setOnClickListener {
+            showOrderDetail(currentOrder)
         }
     }
 }

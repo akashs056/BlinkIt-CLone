@@ -1,4 +1,4 @@
-package com.example.userblinkitclone
+package com.example.userblinkitclone.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.userblinkitclone.R
 import com.example.userblinkitclone.databinding.FragmentProfuileBinding
 
 class ProfuileFragment : Fragment() {

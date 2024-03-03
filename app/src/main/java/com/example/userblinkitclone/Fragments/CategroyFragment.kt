@@ -1,4 +1,4 @@
-package com.example.userblinkitclone
+package com.example.userblinkitclone.Fragments
 
 import android.content.Context
 import android.os.Build
@@ -12,7 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.userblinkitclone.Adapters.ProductAdapter
+import com.example.userblinkitclone.CartListener
 import com.example.userblinkitclone.Models.Product
+import com.example.userblinkitclone.R
 import com.example.userblinkitclone.Utils.Utils
 import com.example.userblinkitclone.databinding.FragmentCategroyBinding
 import com.example.userblinkitclone.databinding.SampleProductsBinding
@@ -27,7 +29,7 @@ class CategroyFragment : Fragment() {
     var categoryName: String? =null
     private lateinit var adapterProduct :ProductAdapter
     private val viewModel : UserViewModel by viewModels()
-    private var cartListener:CartListener?=null
+    private var cartListener: CartListener?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +46,7 @@ class CategroyFragment : Fragment() {
     private fun onSearchClicked() {
         binding.toolbar.setOnMenuItemClickListener{menuItem->
             when(menuItem.itemId){
-                R.id.searchh->{
+                R.id.searchh ->{
                     findNavController().navigate(R.id.action_categroyFragment_to_searchFragment)
                     true
                 }
@@ -55,7 +57,7 @@ class CategroyFragment : Fragment() {
     }
     private fun setStatusBarColor() {
         activity?.window?.apply {
-            val statusBarColors= ContextCompat.getColor(requireContext(),R.color.yellow)
+            val statusBarColors= ContextCompat.getColor(requireContext(), R.color.yellow)
             statusBarColor=statusBarColors
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 decorView.systemUiVisibility=View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR

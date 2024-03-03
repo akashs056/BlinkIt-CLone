@@ -1,4 +1,4 @@
-package com.example.userblinkitclone
+package com.example.userblinkitclone.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.userblinkitclone.Adapters.OrdersAdapter
 import com.example.userblinkitclone.Models.OrderedItems
+import com.example.userblinkitclone.Models.Orders
+import com.example.userblinkitclone.R
 import com.example.userblinkitclone.databinding.FragmentOrdersBinding
 import com.example.userblinkitclone.viewModels.UserViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ import java.lang.StringBuilder
 
 class OrdersFragment : Fragment() {
     private val viewModel:UserViewModel by viewModels()
-    private lateinit var binding:FragmentOrdersBinding
+    private lateinit var binding: FragmentOrdersBinding
     private lateinit var adapter:OrdersAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,11 +48,11 @@ class OrdersFragment : Fragment() {
                             title.append("${products.productCategory}, ")
                         }
                         val orderedItem=OrderedItems(
-                            orders,orders.orderDate,orders.orderStatus,title.toString(),totalPrice
+                            orders.orderId,orders.orderDate,orders.orderStatus,title.toString(),totalPrice
                         )
                         orderedList.add(orderedItem)
                     }
-                    adapter=OrdersAdapter(requireContext())
+                    adapter=OrdersAdapter(requireContext(),::showOrderDetail)
                     binding.RVyourOrders.adapter=adapter
                     adapter.differ.submitList(orderedList)
                 }
@@ -62,6 +64,14 @@ class OrdersFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_ordersFragment_to_profuileFragment)
         }
+    }
+
+    fun showOrderDetail(orders: OrderedItems){
+        val bundle=Bundle()
+        bundle.putInt("status",orders.itemStatus!!)
+        bundle.putString("orderId", orders.orderId)
+        findNavController().navigate(R.id.action_ordersFragment_to_orderDetailFragment,bundle)
+
     }
 
 }

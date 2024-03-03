@@ -1,4 +1,4 @@
-package com.example.userblinkitclone
+package com.example.userblinkitclone.Fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -12,7 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.userblinkitclone.Adapters.ProductAdapter
+import com.example.userblinkitclone.CartListener
 import com.example.userblinkitclone.Models.Product
+import com.example.userblinkitclone.R
 import com.example.userblinkitclone.Utils.Utils
 import com.example.userblinkitclone.databinding.FragmentSearchBinding
 import com.example.userblinkitclone.databinding.SampleProductsBinding
@@ -26,7 +28,7 @@ class SearchFragment : Fragment() {
     val  viewModel:UserViewModel by viewModels()
     private lateinit var binding:FragmentSearchBinding
     private lateinit var adapterProduct:ProductAdapter
-    private var cartListener:CartListener?=null
+    private var cartListener: CartListener?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +43,7 @@ class SearchFragment : Fragment() {
 
     private fun onBackClicked() {
         binding.goBackHome.setOnClickListener {
-            findNavController().navigate(com.example.userblinkitclone.R.id.action_searchFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
         }
     }
 
