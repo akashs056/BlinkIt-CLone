@@ -82,7 +82,6 @@ class OTPFragment : Fragment() {
         }
     }
 
-
     private fun sendOtp(number: String) {
         Utils.showDialog(requireContext(),"Sending OTP")
         viewModel.apply {
